@@ -43,6 +43,7 @@ export function addToCart(product, qty = 1) {
       title: product.title,
       brand: product.brand,
       thumb: product.thumbnail,
+      price: product.price,
       qty: qty,
     });
   }

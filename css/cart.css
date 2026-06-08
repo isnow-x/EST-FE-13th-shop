@@ -56,9 +56,8 @@
 
 .cart-layout {
   display: grid;
-  grid-template-columns: minmax(0, 2fr) 320px;
-  gap: 32px;
-  align-items: start;
+  grid-template-columns: 1fr;
+  gap: 0;
 }
 
 .cart-list,
