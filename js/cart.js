@@ -11,6 +11,7 @@ const totalAmount = document.querySelector(".order-total strong");
 updateCartCount();
 let cart = readCart();
 let cartHTML = [];
+let selectedIds = new Set();
 
 function updateCartCountFx() {
   // 상품 개수 반영
@@ -73,6 +74,7 @@ function updateSelectState() {
   selectAllText.textContent = `전체선택 (${checkedCount}/${checkboxes.length})`;
   // 모두 체크시, 전체 선택 부분 체크 true
   selectAll.querySelector("input").checked = checkedCount > 0 && checkedCount === checkboxes.length;
+  selectedIds = new Set(getCheckedIds()); // 체크했을때 수량 올리는거 여기에 넣어줌
 }
 
 // 화면 코드 생성
@@ -82,6 +84,7 @@ function renderCart() {
     el.remove();
   });
   cartHTML = []; // 기존 카트 html 내용 지움
+
   console.log(cart);
   if (cart.length === 0) {
     cartHTML.push(`<article>장바구니가 비어있습니다.</article>`);
@@ -91,7 +94,7 @@ function renderCart() {
         `
     <article class="cart-item" data-id="${item.id}">
       <label class="item-check">
-        <input type="checkbox"/>               
+        <input type="checkbox" ${selectedIds.has(item.id) ? "checked" : ""}/>               
       </label>
       <div class="cart-thumb">
         <img
@@ -129,12 +132,10 @@ function saveCart() {
 
 //선택 삭제
 selectDeleteBtn.addEventListener("click", () => {
-  const checkboxes = getCheckBoxes();
-  const checkedIds = checkboxes
-    .filter(checkbox => checkbox.checked)
-    .map(checkbox => Number(checkbox.closest(".cart-item").dataset.id));
-  console.log(checkedIds);
+  const checkedIds = CheckedIds();
+
   if (checkedIds.length === 0) return;
+
   cart = cart.filter(item => !checkedIds.includes(item.id));
   saveCart();
   renderCart();
@@ -153,3 +154,11 @@ selectAll.querySelector("input").addEventListener("change", e => {
   }
   updateSelectState();
 });
+
+function getCheckedIds() {
+  const checkboxes = getCheckBoxes();
+  return checkboxes
+    .filter(checkbox => checkbox.checked)
+    .map(checkbox => Number(checkbox.closest(".cart-item").dataset.id));
+  console.log(checkedIds);
+}
