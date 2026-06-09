@@ -56,34 +56,22 @@ function createContent(data) {
 }
 
 //상품 상세 tab
-const detail_tab_menus = document.querySelector(".detail-tabs");
-const detail_tab_contents = document.querySelector(".tab-content");
-/*
-detail_tab_menus를 클릭하면, 
-  변수명 target에 클릭한 그 요소의 href 속성의 값을 할당
-  detail_tab_contents 모두가 안보이고
-  변수명 target에 해당하는 요소에 active 추가
-*/
-detail_tab_menus.addEventListener("click", e => {
-  const menu = e.target.closest("a");
-  if (!menu) return;
+const detail_tab_menus = document.querySelectorAll(".detail-tabs a");
+const detail_tab_contents = document.querySelectorAll(".tab-content .detail-content");
 
-  const target = menu.getAttribute("href");
-  const targetContent = document.querySelector(target);
-  if (!targetContent) return;
-
-  const menus = detail_tab_menus.querySelectorAll("a");
-  const contents = detail_tab_contents.querySelectorAll(".detail-content");
-
-  menus.forEach(m => {
-    m.classList.remove("active");
+detail_tab_menus.forEach(m => {
+  m.addEventListener("click", e => {
+    e.preventDefault();
+    detail_tab_menus.forEach(m => {
+      m.classList.remove("active");
+    });
+    m.classList.add("active");
+    detail_tab_contents.forEach(c => {
+      c.classList.remove("active");
+    });
+    let target = m.getAttribute("href"); //#product-info
+    document.querySelector(target).classList.add("active");
   });
-  menu.classList.add("active");
-
-  contents.forEach(c => {
-    c.classList.remove("active");
-  });
-  targetContent.classList.add("active");
 });
 
 function createRecommendLists(all, category, id) {

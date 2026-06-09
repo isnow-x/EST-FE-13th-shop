@@ -40,10 +40,10 @@ export function addToCart(product, qty = 1) {
     //새 상품 추가, 수량 1
     cart.push({
       id: product.id,
+      price: product.price,
       title: product.title,
       brand: product.brand,
       thumb: product.thumbnail,
-      price: product.price,
       qty: qty,
     });
   }
